@@ -17,6 +17,10 @@ export default function FileShare() {
     } else if (selectedFile) {
       console.log('Uploading file:', selectedFile);
     }
+
+    // Reset after upload
+    setText('');
+    setSelectedFile(null);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,16 +54,22 @@ export default function FileShare() {
                 value={text}
                 onChange={(e) => {
                   setText(e.target.value);
-                  setSelectedFile(null);
+                  setSelectedFile(null); // Clear file selection when text is entered
                 }}
                 placeholder="Enter your text here..."
-                disabled={!!selectedFile}
+                disabled={!!selectedFile} // Disable text input if a file is selected
               />
             </div>
 
             {/* File Upload Section */}
             <div className="flex flex-col justify-center gap-4">
-              <input type="file" id="file-upload" className="hidden" onChange={handleFileChange} disabled={!!text} />
+              <input
+                type="file"
+                id="file-upload"
+                className="hidden"
+                onChange={handleFileChange}
+                disabled={!!text} // Disable file input if text is entered
+              />
               <label
                 htmlFor="file-upload"
                 className={classNames(
@@ -78,10 +88,12 @@ export default function FileShare() {
                 <span className="text-sm">{selectedFile ? selectedFile.name : 'Upload a file'}</span>
               </label>
 
+              {/* Upload Button */}
               <IconButton
                 className="bg-purple-400 hover:brightness-94 text-white p-2 w-full"
-                disabled={!text && !selectedFile}
-                >
+                disabled={!text && !selectedFile} 
+                onClick={handleUpload}
+              >
                 <div className="flex items-center justify-center gap-2">
                   <div className="i-ph:arrow-up text-lg" />
                   <span>Upload</span>
