@@ -28,8 +28,8 @@ interface BaseChatProps {
 }
 
 const EXAMPLE_PROMPTS = [
-  { text: "Create a simple snake game using HTML and CSS" },
-  { text: "Create a todo list using React.js" }
+  { text: 'Create a simple snake game using HTML and CSS' },
+  { text: 'Create a todo list using React.js' },
 ];
 
 const TEXTAREA_MIN_HEIGHT = 10;
@@ -59,10 +59,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
     return (
       <div
         ref={ref}
-        className={classNames(
-          styles.BaseChat,
-          'relative flex h-full w-full overflow-hidden bg-black text-[#E0E0FF]',
-        )}
+        className={classNames(styles.BaseChat, 'relative flex h-full w-full overflow-hidden bg-black text-[#E0E0FF]')}
         data-chat-visible={showChat}
       >
         <ClientOnly>{() => <Menu />}</ClientOnly>
@@ -70,9 +67,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
           <div className={classNames(styles.Chat, 'flex flex-col flex-grow min-w-[var(--chat-min-width)] h-full')}>
             {!chatStarted && (
               <div id="intro" className="mt-[26vh] max-w-chat mx-auto">
-                <h1 className="text-5xl text-center font-bold text-purple mb-2">
-                  What can I help you build?
-                </h1>
+                <h1 className="text-5xl text-center font-bold text-purple mb-2">What can I help you build?</h1>
                 <br></br>
                 <p className="mb-4 text-center text-bolt-elements-textSecondary opacity-100">
                   Create Full-Stack Apps with any Tech Stack
@@ -154,8 +149,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                         disabled={input.length === 0 || enhancingPrompt}
                         className={classNames({
                           'opacity-100!': enhancingPrompt,
-                          'text-[#8A4FFF]! pr-1.5 enabled:hover:bg-[#4A2A8A]!':
-                            promptEnhanced,
+                          'text-[#8A4FFF]! pr-1.5 enabled:hover:bg-[#4A2A8A]!': promptEnhanced,
                         })}
                         onClick={() => enhancePrompt?.()}
                       >
@@ -184,9 +178,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
             </div>
             {!chatStarted && (
               <div id="examples" className="relative w-full max-w-xl mx-auto mt-8 flex justify-center">
-                <div className="flex flex-col space-y-2 [mask-image:linear-gradient(to_bottom,black_0%,transparent_180%)] hover:[mask-image:none]">
-
-                </div>
+                <div className="flex flex-col space-y-2 [mask-image:linear-gradient(to_bottom,black_0%,transparent_180%)] hover:[mask-image:none]"></div>
               </div>
             )}
           </div>

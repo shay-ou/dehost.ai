@@ -4,9 +4,11 @@ import { chatStore } from '~/lib/stores/chat';
 import { classNames } from '~/utils/classNames';
 import { HeaderActionButtons } from './HeaderActionButtons.client';
 import { ChatDescription } from '~/lib/persistence/ChatDescription.client';
+import { messageStore } from '~/lib/stores/messages';
 
 export function Header() {
   const chat = useStore(chatStore);
+  const messages = useStore(messageStore);
 
   return (
     <header
@@ -30,7 +32,7 @@ export function Header() {
         <ClientOnly>
           {() => (
             <div className="mr-1">
-              <HeaderActionButtons />
+              <HeaderActionButtons messages={messages} />
             </div>
           )}
         </ClientOnly>
