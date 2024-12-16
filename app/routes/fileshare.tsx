@@ -63,13 +63,7 @@ export default function FileShare() {
 
             {/* File Upload Section */}
             <div className="flex flex-col justify-center gap-4">
-              <input
-                type="file"
-                id="file-upload"
-                className="hidden"
-                onChange={handleFileChange}
-                disabled={!!text} // Disable file input if text is entered
-              />
+              <input type="file" id="file-upload" className="hidden" onChange={handleFileChange} disabled={!!text} />
               <label
                 htmlFor="file-upload"
                 className={classNames(
