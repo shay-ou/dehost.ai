@@ -6,6 +6,7 @@ import { workbenchStore } from '~/lib/stores/workbench';
 import { classNames } from '~/utils/classNames';
 import { deployToIPFS } from '~/lib/ipfs/deploy';
 import type { Message } from 'ai';
+import { DomainModal } from '~/components/ui/DomainModal';
 
 interface HeaderActionButtonsProps {
   messages?: Message[];
@@ -15,11 +16,12 @@ export function HeaderActionButtons({ messages = [] }: HeaderActionButtonsProps)
   const showWorkbench = useStore(workbenchStore.showWorkbench);
   const { showChat } = useStore(chatStore);
   const [isDeploying, setIsDeploying] = useState(false);
+  const [showDomainModal, setShowDomainModal] = useState(false);
+  const [currentIpfsHash, setCurrentIpfsHash] = useState('');
 
   const canHideChat = showWorkbench || !showChat;
 
   const handleDeploy = async () => {
-    // Find the last message that contains HTML content
     const htmlMessage = [...messages]
       .reverse()
       .find((msg) => msg.role === 'assistant' && msg.content.includes('<!DOCTYPE html>'));
@@ -32,7 +34,6 @@ export function HeaderActionButtons({ messages = [] }: HeaderActionButtonsProps)
     try {
       setIsDeploying(true);
 
-      // Extract HTML content from the message
       const content = htmlMessage.content;
       const htmlMatch = content.match(/<!DOCTYPE html>[\s\S]*<\/html>/);
 
@@ -43,22 +44,40 @@ export function HeaderActionButtons({ messages = [] }: HeaderActionButtonsProps)
 
       const htmlContent = htmlMatch[0];
 
-      // Deploy to IPFS using server-side API key
       const result = await deployToIPFS(htmlContent, import.meta.env.VITE_LIGHTHOUSE_API_KEY);
+      setCurrentIpfsHash(result.hash);
 
-      // Show success message with the IPFS URL
       toast.success(
         <div>
           Deployed to IPFS!
           <br />
-          <a
-            href={result.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-purple-300 hover:text-purple-200 underline"
-          >
-            View website
-          </a>
+          <div className="flex flex-col gap-2 mt-2">
+            <div className="flex items-center justify-between gap-2 bg-bolt-elements-background-depth-3 rounded px-3 py-2">
+              <a
+                href={result.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-purple-300 hover:text-purple-200"
+              >
+                {result.url}
+              </a>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(result.url);
+                  toast.success('IPFS URL copied to clipboard');
+                }}
+                className="text-sm text-bolt-elements-textSecondary hover:text-bolt-elements-textPrimary"
+              >
+                Copy
+              </button>
+            </div>
+            <button
+              onClick={() => setShowDomainModal(true)}
+              className="px-3 py-2 text-sm rounded-md bg-purple-600 hover:bg-purple-700 text-white transition-colors"
+            >
+              Add Custom Domain
+            </button>
+          </div>
         </div>,
       );
     } catch (error) {
@@ -68,78 +87,97 @@ export function HeaderActionButtons({ messages = [] }: HeaderActionButtonsProps)
     }
   };
 
+  const handleDomainSubmit = async (domain: string) => {
+    try {
+      // We'll just log for now since we're using DNSLink
+      console.log('Domain submitted:', domain, 'IPFS hash:', currentIpfsHash);
+    } catch (error) {
+      toast.error('Failed to process domain. Please try again.');
+      setShowDomainModal(false);
+    }
+  };
+
   return (
-    <div className="flex gap-2">
-      <button
-        onClick={handleDeploy}
-        disabled={isDeploying}
-        className={classNames(
-          'flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-all',
-          'bg-gradient-to-r from-purple-600 to-purple-700 text-white',
-          'hover:from-purple-700 hover:to-purple-800',
-          'disabled:opacity-50 disabled:cursor-not-allowed',
-        )}
-      >
-        {isDeploying ? (
-          <>
-            <div className="i-svg-spinners:90-ring-with-bg text-lg" />
-            Deploying...
-          </>
-        ) : (
-          <>
-            <div className="i-ph:cloud-arrow-up text-lg" />
-            Deploy to IPFS
-          </>
-        )}
-      </button>
-
-      <div className="flex border border-bolt-elements-borderColor rounded-md overflow-hidden">
-        <Button
-          active={showChat}
-          disabled={!canHideChat}
-          onClick={() => {
-            if (canHideChat) {
-              chatStore.setKey('showChat', !showChat);
-            }
-          }}
+    <>
+      <div className="flex gap-2">
+        <button
+          onClick={handleDeploy}
+          disabled={isDeploying}
+          className={classNames(
+            'flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-all',
+            'bg-gradient-to-r from-purple-600 to-purple-700 text-white',
+            'hover:from-purple-700 hover:to-purple-800',
+            'disabled:opacity-50 disabled:cursor-not-allowed',
+          )}
         >
-          <div className="i-bolt:chat text-sm" />
-        </Button>
-        <div className="w-[1px] bg-bolt-elements-borderColor" />
-        <Button
-          active={showWorkbench}
-          onClick={() => {
-            if (showWorkbench && !showChat) {
-              chatStore.setKey('showChat', true);
-            }
+          {isDeploying ? (
+            <>
+              <div className="i-svg-spinners:90-ring-with-bg text-lg" />
+              Deploying...
+            </>
+          ) : (
+            <>
+              <div className="i-ph:cloud-arrow-up text-lg" />
+              Deploy to IPFS
+            </>
+          )}
+        </button>
 
-            workbenchStore.showWorkbench.set(!showWorkbench);
-          }}
-        >
-          <div className="i-ph:code-bold" />
-        </Button>
+        <div className="flex border border-bolt-elements-borderColor rounded-md overflow-hidden">
+          <Button
+            active={showChat}
+            disabled={!canHideChat}
+            onClick={() => {
+              if (canHideChat) {
+                chatStore.setKey('showChat', !showChat);
+              }
+            }}
+          >
+            <div className="i-bolt:chat text-sm" />
+          </Button>
+          <div className="w-[1px] bg-bolt-elements-borderColor" />
+          <Button
+            active={showWorkbench}
+            onClick={() => {
+              if (showWorkbench && !showChat) {
+                chatStore.setKey('showChat', true);
+              }
+
+              workbenchStore.showWorkbench.set(!showWorkbench);
+            }}
+          >
+            <div className="i-ph:code-bold" />
+          </Button>
+        </div>
       </div>
-    </div>
+
+      <DomainModal
+        isOpen={showDomainModal}
+        onClose={() => setShowDomainModal(false)}
+        ipfsHash={currentIpfsHash}
+        onSubmit={handleDomainSubmit}
+      />
+    </>
   );
 }
 
 interface ButtonProps {
   active?: boolean;
   disabled?: boolean;
-  children?: any;
-  onClick?: VoidFunction;
+  onClick?: () => void;
+  children: React.ReactNode;
 }
 
-function Button({ active = false, disabled = false, children, onClick }: ButtonProps) {
+function Button({ active, disabled, onClick, children }: ButtonProps) {
   return (
     <button
-      className={classNames('flex items-center p-1.5', {
-        'bg-bolt-elements-item-backgroundDefault hover:bg-bolt-elements-item-backgroundActive text-bolt-elements-textTertiary hover:text-bolt-elements-textPrimary':
-          !active,
-        'bg-bolt-elements-item-backgroundAccent text-bolt-elements-item-contentAccent': active && !disabled,
-        'bg-bolt-elements-item-backgroundDefault text-alpha-gray-20 dark:text-alpha-white-20 cursor-not-allowed':
-          disabled,
+      className={classNames('flex items-center justify-center w-8 h-8 transition-colors', {
+        'bg-bolt-elements-item-backgroundActive text-bolt-elements-item-contentActive': active,
+        'hover:bg-bolt-elements-item-backgroundHover': !active && !disabled,
+        'text-bolt-elements-item-contentDefault': !active,
+        'opacity-50 cursor-not-allowed': disabled,
       })}
+      disabled={disabled}
       onClick={onClick}
     >
       {children}
