@@ -18,7 +18,6 @@ export default function FileShare() {
       console.log('Uploading file:', selectedFile);
     }
 
-    // Reset after upload
     setText('');
     setSelectedFile(null);
   };
@@ -54,10 +53,10 @@ export default function FileShare() {
                 value={text}
                 onChange={(e) => {
                   setText(e.target.value);
-                  setSelectedFile(null); // Clear file selection when text is entered
+                  setSelectedFile(null);
                 }}
                 placeholder="Enter your text here..."
-                disabled={!!selectedFile} // Disable text input if a file is selected
+                disabled={!!selectedFile}
               />
             </div>
 
@@ -75,7 +74,7 @@ export default function FileShare() {
                   'rounded-lg p-4',
                   'flex flex-col items-center justify-center',
                   'min-h-[100px]',
-                  text ? 'opacity-50 cursor-not-allowed' : 'hover:bg-opacity-80'
+                  text ? 'opacity-50 cursor-not-allowed' : 'hover:bg-opacity-80',
                 )}
               >
                 <div className="i-ph:file text-3xl mb-2" />
@@ -85,7 +84,7 @@ export default function FileShare() {
               {/* Upload Button */}
               <IconButton
                 className="bg-purple-400 hover:brightness-94 text-white p-2 w-full"
-                disabled={!text && !selectedFile} 
+                disabled={!text && !selectedFile}
                 onClick={handleUpload}
               >
                 <div className="flex items-center justify-center gap-2">
