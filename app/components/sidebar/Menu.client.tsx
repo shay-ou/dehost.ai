@@ -108,18 +108,18 @@ export function Menu() {
     >
       <div className="flex items-center h-[var(--header-height)]">{/* Placeholder */}</div>
       <div className="flex-1 flex flex-col h-full w-full overflow-hidden">
-        <div className="p-4">
+        <div className="p-4 ">
           <a
             href="/"
-            className="flex gap-2 items-center bg-[purplexs] text-white hover:bg-[#9b4dca] rounded-md p-2 transition-theme"
+            className="flex gap-2 items-center bg-[purplexs] text-white hover:bg-[#9b4dca] rounded-md p-2 transition-theme bg-purple-500"
           >
-            <span className="inline-block i-bolt:chat scale-110" />
+            <span className="inline-block i-bolt:chat scale-110 font-bold" />
             Begin chat
           </a>
         </div>
         <div className="text-[#e1e1e1] font-medium pl-6 pr-5 my-2">Your Chats</div>
 
-        <div className="flex-1 overflow-scroll pl-4 pr-5 pb-5">
+        <div className="flex-1 overflow-hidden pl-4 pr-5 pb-5">
           {list.length === 0 && <div className="pl-2 text-bolt-elements-textTertiary">No previous conversations</div>}
           <DialogRoot open={dialogContent !== null}>
             {binDates(list).map(({ category, items }) => (
