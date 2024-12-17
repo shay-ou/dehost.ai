@@ -56,9 +56,10 @@
     "@xterm/addon-web-links": "^0.11.0",
     "@xterm/xterm": "^5.5.0",
     "ai": "^3.3.4",
+    "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
     "diff": "^5.2.0",
-    "framer-motion": "^11.2.12",
+    "framer-motion": "^11.15.0",
     "isbot": "^4.1.0",
     "istextorbinary": "^9.5.0",
     "jose": "^5.6.3",
@@ -75,6 +76,7 @@
     "remix-island": "^0.2.0",
     "remix-utils": "^7.6.0",
     "shiki": "^1.9.1",
+    "tailwind-merge": "^2.5.5",
     "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
@@ -88,6 +90,7 @@
     "is-ci": "^3.0.1",
     "node-fetch": "^3.3.2",
     "prettier": "^3.3.2",
+    "sass-embedded": "^1.83.0",
     "typescript": "^5.5.2",
     "unified": "^11.0.5",
     "unocss": "^0.61.3",
