@@ -69,9 +69,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
               <div id="intro" className="mt-[26vh] max-w-chat mx-auto">
                 <h1 className="text-5xl text-center font-bold text-purple mb-2">What can I help you build?</h1>
                 <br></br>
-                <p className="mb-4 text-center text-bolt-elements-textSecondary opacity-100">
-                  Create Full-Stack Apps with any Tech Stack
-                </p>
+                <p className="mb-4 text-center text-bolt-elements-textSecondary opacity-100">Create</p>
               </div>
             )}
             <div
