@@ -64,14 +64,17 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
         className={classNames(styles.BaseChat, 'relative flex h-full w-full overflow-hidden bg-black text-[#E0E0FF]')}
         data-chat-visible={showChat}
       >
+      <div className="absolute inset-0 bg-gradient-to-b from-purple-500/20 via-transparent to-transparent">
         <ClientOnly>{() => <Menu />}</ClientOnly>
-        <div ref={scrollRef} className="flex overflow-y-auto w-full h-full">
+        <div ref={scrollRef} className="p-4 flex overflow-y-auto w-full h-full">
           <div className={classNames(styles.Chat, 'flex flex-col flex-grow min-w-[var(--chat-min-width)] h-full')}>
             {!chatStarted && (
               <div id="intro" className="mt-[26vh] max-w-chat mx-auto">
                 <h1 className="text-5xl text-center font-bold text-purple mb-2">What can I help you build?</h1>
                 <br></br>
-                <p className="mb-4 text-center text-bolt-elements-textSecondary opacity-100">Create</p>
+                <p className="mb-4 text-center text-bolt-elements-textSecondary opacity-100">
+                  Create Full-Stack Apps with any Tech Stack
+                </p>
               </div>
             )}
             <div
@@ -186,6 +189,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
         </div>
         <ShootingStars />
         <StarsBackground/>
+      </div>
       </div>
     );
   },
