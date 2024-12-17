@@ -9,6 +9,8 @@ import { Messages } from './Messages.client';
 import { SendButton } from './SendButton.client';
 
 import styles from './BaseChat.module.scss';
+import { ShootingStars } from '../ui/shooting-stars';
+import { StarsBackground } from '../ui/stars-background';
 
 interface BaseChatProps {
   textareaRef?: React.RefObject<HTMLTextAreaElement> | undefined;
@@ -75,7 +77,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
               </div>
             )}
             <div
-              className={classNames('pt-40 px-9', {
+              className={classNames('px-9', {
                 'h-full flex flex-col': chatStarted,
               })}
             >
@@ -184,6 +186,8 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
           </div>
           <ClientOnly>{() => <Workbench chatStarted={chatStarted} isStreaming={isStreaming} />}</ClientOnly>
         </div>
+        <ShootingStars />
+        <StarsBackground/>
       </div>
     );
   },

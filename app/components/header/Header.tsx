@@ -13,7 +13,7 @@ export function Header() {
   return (
     <header
       className={classNames(
-        'flex items-center justify-between bg-bolt-elements-background-depth-1 p-5 border-b h-[var(--header-height)]',
+        'flex items-center justify-between bg-[#161616] p-5 border-b h-[var(--header-height)] px-10',
         {
           'border-transparent': !chat.started,
           'border-bolt-elements-borderColor': chat.started,
@@ -21,7 +21,7 @@ export function Header() {
       )}
     >
       {/* Logo */}
-      <div className="flex items-center gap-2 text-bolt-elements-textPrimary cursor-pointer">
+      <div className="flex items-center gap-2 text-bolt-elements-textPrimary cursor-pointer ">
         <a href="/" className="text-3xl font-extrabold text-purple-400 flex items-center shadow-xl">
           DeHost
         </a>
@@ -33,7 +33,7 @@ export function Header() {
       </span>
 
       {/* Right-Aligned Buttons */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-10 font-semibold">
         <a href="/fileshare" className="text-lg text-zinc-500 hover:text-zinc-400 flex items-center shadow-xl">
           File Share
         </a>
@@ -46,7 +46,7 @@ export function Header() {
       {chat.started && (
         <ClientOnly>
           {() => (
-            <div className="ml-4">
+            <div className="ml-8">
               <HeaderActionButtons messages={messages} />
             </div>
           )}

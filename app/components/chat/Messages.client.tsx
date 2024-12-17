@@ -27,7 +27,7 @@ export const Messages = React.forwardRef<HTMLDivElement, MessagesProps>((props: 
             <div
               key={index}
               className={classNames('flex gap-3 p-6 w-full rounded-[calc(0.75rem-1px)]', {
-                'bg-gradient-to-r from-gray-500 via-g-400 to-purple-900 text-white': isUserMessage || !isStreaming || (isStreaming && !isLast),
+                'bg-gradient-to-r from-purple-500 to-purple-700 text-white opacity-85': isUserMessage || !isStreaming || (isStreaming && !isLast),
                 'bg-gradient-to-b from-bolt-elements-messages-background from-100% to-transparent bg-opacity-20': isStreaming && isLast,
                 'mt-4': !isFirst,
               })}
